@@ -383,7 +383,7 @@ spec:
         - name: dashboards
           mountPath: /var/lib/grafana/dashboards/
         - name: grafana-ini
-          mountPath: /etc/grafana/grafana.ini
+          mountPath: /etc/grafana/
       volumes:
         - name: datasource-config
           configMap:
