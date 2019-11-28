@@ -329,6 +329,20 @@ metadata:
   namespace: grafana
 
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: grafana-ini
+  namespace: grafana
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 50Mi
+
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -368,6 +382,8 @@ spec:
           mountPath: /etc/grafana/provisioning/dashboards/
         - name: dashboards
           mountPath: /var/lib/grafana/dashboards/
+        - name: grafana-ini
+          mountPath: /etc/grafana/grafana.ini
       volumes:
         - name: datasource-config
           configMap:
@@ -381,6 +397,10 @@ spec:
           configMap:
             defaultMode: 420
             name: grafana-dashboards
+        - name: grafana-ini
+          persistentVolumeClaim:
+            claimName: grafana-ini
+
 ---
 apiVersion: v1
 kind: Service
